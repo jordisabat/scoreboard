@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
-import { ScoreType } from "../data/types";
-import { sortScores } from "../utils/helper";
+import { GameType } from "../data/types";
+import { sortGames } from "../utils/helper";
 
-const scores: ScoreType[] = [
+const games: GameType[] = [
   {
     id: 1,
     homeTeam: "Team A",
@@ -29,8 +29,8 @@ const scores: ScoreType[] = [
   },
 ];
 
-test("should return scores sorted in descending order based on total number of goals", () => {
-  const expectedSortedScores: ScoreType[] = [
+test("should return games sorted in descending order based on total number of goals", () => {
+  const expectedSortedGames: GameType[] = [
     {
       id: 3,
       homeTeam: "Team E",
@@ -57,7 +57,7 @@ test("should return scores sorted in descending order based on total number of g
     },
   ];
 
-  const sortedScores: ScoreType[] = sortScores(scores);
+  const sortedGames: GameType[] = sortGames(games);
 
-  expect(sortedScores).toEqual(expectedSortedScores);
+  expect(sortedGames).toEqual(expectedSortedGames);
 });

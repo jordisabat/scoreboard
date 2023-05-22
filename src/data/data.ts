@@ -1,6 +1,6 @@
-import { Game } from "./types";
+import { GameType } from "./types";
 
-export const initialData: Game[] = [
+export const initialData: GameType[] = [
   {
     id: 1,
     homeTeam: "France",

@@ -1,5 +1,5 @@
 import { QueryFunction } from "@tanstack/react-query";
-import { Game } from "./types";
+import { GameType } from "./types";
 import { initialData } from "./data";
 
 const fakeFetchAPiCall = () =>
@@ -7,13 +7,13 @@ const fakeFetchAPiCall = () =>
     setTimeout(() => resolve(initialData), 2000);
   });
 
-const fetchData: QueryFunction<Game[]> = async () => {
+const fetchData: QueryFunction<GameType[]> = async () => {
   const apiRes = await fakeFetchAPiCall();
 
   if (!apiRes) {
     throw new Error("API call failed");
   }
 
-  return apiRes as Game[];
+  return apiRes as GameType[];
 };
 export default fetchData;

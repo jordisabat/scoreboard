@@ -1,6 +1,6 @@
-import { ScoreType } from "../../data/types";
+import { GameType } from "../../data/types";
 
-const testData: ScoreType[] = [
+const testData: GameType[] = [
   {
     id: 1,
     homeTeam: "France",

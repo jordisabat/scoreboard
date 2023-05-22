@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
 import { cleanup, render, RenderResult } from "@testing-library/react";
-import { ScoreProps } from "../components/Interfaces";
-import Score from "../components/Score";
+import { GameProps } from "../components/Interfaces";
+import Game from "../components/Game";
 
-const match: ScoreProps = {
+const match: GameProps = {
   id: 1,
   homeTeam: "Home Team",
   awayTeam: "Away Team",
@@ -12,9 +12,9 @@ const match: ScoreProps = {
   status: "Final",
 };
 
-test("renders the score information correctly", async () => {
-  const score: RenderResult = render(
-    <Score
+test("renders the game information correctly", async () => {
+  const game: RenderResult = render(
+    <Game
       id={match.id}
       homeTeam={match.homeTeam}
       awayTeam={match.awayTeam}
@@ -25,8 +25,8 @@ test("renders the score information correctly", async () => {
     />
   );
 
-  const scoreWrapper: HTMLElement = await score.findByTestId("score");
-  expect(scoreWrapper.textContent).toContain(
+  const gameWrapper: HTMLElement = await game.findByTestId("game");
+  expect(gameWrapper.textContent).toContain(
     "1. Home Team 3 - Away Team 1 (Final)"
   );
   cleanup();

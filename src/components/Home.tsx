@@ -1,21 +1,21 @@
 import ScoreBoard from "./ScoreBoard";
 import fetchData from "../data/fetchData";
-import { sortScores } from "../utils/helper";
+import { sortGames } from "../utils/helper";
 import { useQuery } from "@tanstack/react-query";
-import { Game } from "../data/types";
+import { GameType } from "../data/types";
 
 const Home = () => {
-  const results = useQuery(["scores"], fetchData);
+  const results = useQuery(["games"], fetchData);
 
   if (results.isLoading) {
     return <p>Loading...</p>;
   }
 
-  const scores: Game[] = results?.data ? sortScores(results?.data) : [];
+  const games: GameType[] = results?.data ? sortGames(results?.data) : [];
 
   return (
     <div className="App">
-      <ScoreBoard scores={scores} />
+      <ScoreBoard games={games} />
     </div>
   );
 };

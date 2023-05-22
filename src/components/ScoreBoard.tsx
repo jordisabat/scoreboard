@@ -1,25 +1,25 @@
-import Score from "./Score";
-import { Game } from "../data/types";
+import Game from "./Game";
+import { GameType } from "../data/types";
 
-const ScoreBoard = ({ scores }: { scores: Game[] }) => {
+const ScoreBoard = ({ games }: { games: GameType[] }) => {
   return (
-    <div className="scoreboards">
-      {!scores.length ? (
+    <div className="scoreboard">
+      {!games.length ? (
         <>
-          <h2>Scoreboards</h2>
-          <p>No scores yet</p>
+          <h2>Scoreboard</h2>
+          <p>No games yet</p>
         </>
       ) : (
         <div data-testid="scoreboard">
-          {scores.map((score) => (
-            <Score
-              id={score.id}
-              homeTeam={score.homeTeam}
-              awayTeam={score.awayTeam}
-              homeScore={score.homeScore}
-              awayScore={score.awayScore}
-              status={score.status}
-              key={score.id}
+          {games.map((game) => (
+            <Game
+              id={game.id}
+              homeTeam={game.homeTeam}
+              awayTeam={game.awayTeam}
+              homeScore={game.homeScore}
+              awayScore={game.awayScore}
+              status={game.status}
+              key={game.id}
             />
           ))}
         </div>

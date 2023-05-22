@@ -1,15 +1,15 @@
 import React from "react";
 
-import { ScoreProps } from "./Interfaces";
+import { GameProps } from "./Interfaces";
 
-const Score = (props: ScoreProps) => {
+const Game = (props: GameProps) => {
   const { id, homeTeam, awayTeam, homeScore, awayScore, status } = props;
 
   return (
-    <div data-testid="score">
+    <div data-testid="game">
       {id}. {homeTeam} {homeScore} - {awayTeam} {awayScore} ({status})
     </div>
   );
 };
 
-export default Score;
+export default Game;

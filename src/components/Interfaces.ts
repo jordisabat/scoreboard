@@ -1,4 +1,4 @@
-export interface ScoreProps {
+export interface GameProps {
   id: number;
   homeTeam: string;
   awayTeam: string;
