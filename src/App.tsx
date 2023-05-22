@@ -1,11 +1,21 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import Home from "./components/Home";
 
+const queryClient: QueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  },
+});
+
 const App = () => {
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
       <Home />
-    </div>
+    </QueryClientProvider>
   );
 };
 

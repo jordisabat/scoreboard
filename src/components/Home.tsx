@@ -1,32 +1,19 @@
-import { useEffect, useState } from "react";
 import ScoreBoard from "./ScoreBoard";
-import { Score as StoreType } from "../data/types";
 import fetchData from "../data/fetchData";
 import { sortScores } from "../utils/helper";
+import { useQuery } from "@tanstack/react-query";
+import { Game } from "../data/types";
 
 const Home = () => {
-  const [scores, setScores] = useState<StoreType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const results = useQuery(["scores"], fetchData);
 
-  useEffect(() => {
-    const loadAndSortData = async () => {
-      try {
-        setLoading(true);
-        const initialData: StoreType[] = await fetchData();
-        const sortedData = sortScores(initialData);
-        setScores(sortedData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching scores:", error);
-      }
-    };
+  if (results.isLoading) {
+    return <p>Loading...</p>;
+  }
 
-    void loadAndSortData();
-  }, []);
+  const scores: Game[] = results?.data ? sortScores(results?.data) : [];
 
-  return loading ? (
-    <p>Loading...</p>
-  ) : (
+  return (
     <div className="App">
       <ScoreBoard scores={scores} />
     </div>

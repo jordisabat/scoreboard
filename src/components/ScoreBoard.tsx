@@ -1,7 +1,7 @@
 import Score from "./Score";
-import { Score as ScoreType } from "../data/types";
+import { Game } from "../data/types";
 
-const ScoreBoard = ({ scores }: { scores: ScoreType[] }) => {
+const ScoreBoard = ({ scores }: { scores: Game[] }) => {
   return (
     <div className="scoreboards">
       {!scores.length ? (

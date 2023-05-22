@@ -1,52 +1,19 @@
-import { Score as ScoreType } from "./types";
-import { sortScores } from "../utils/helper";
+import { QueryFunction } from "@tanstack/react-query";
+import { Game } from "./types";
+import { initialData } from "./data";
 
-const initialData: ScoreType[] = [
-  {
-    id: 1,
-    homeTeam: "France",
-    awayTeam: "Brazil",
-    homeScore: 3,
-    awayScore: 1,
-    status: "scheduled",
-  },
-  {
-    id: 2,
-    homeTeam: "Germany",
-    awayTeam: "Italy",
-    homeScore: 2,
-    awayScore: 2,
-    status: "scheduled",
-  },
-  {
-    id: 3,
-    homeTeam: "England",
-    awayTeam: "Spain",
-    homeScore: 1,
-    awayScore: 0,
-    status: "scheduled",
-  },
-  {
-    id: 4,
-    homeTeam: "Netherlands",
-    awayTeam: "Argentina",
-    homeScore: 0,
-    awayScore: 0,
-    status: "scheduled",
-  },
-  {
-    id: 5,
-    homeTeam: "Portugal",
-    awayTeam: "Belgium",
-    homeScore: 0,
-    awayScore: 0,
-    status: "scheduled",
-  },
-];
-
-const fetchData = (): Promise<ScoreType[]> => {
-  return new Promise((resolve) => {
+const fakeFetchAPiCall = () =>
+  new Promise((resolve) => {
     setTimeout(() => resolve(initialData), 2000);
   });
+
+const fetchData: QueryFunction<Game[]> = async () => {
+  const apiRes = await fakeFetchAPiCall();
+
+  if (!apiRes) {
+    throw new Error("API call failed");
+  }
+
+  return apiRes as Game[];
 };
 export default fetchData;

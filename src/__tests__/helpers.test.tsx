@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Score as ScoreType } from "../data/types";
+import { ScoreType } from "../data/types";
 import { sortScores } from "../utils/helper";
 
 const scores: ScoreType[] = [

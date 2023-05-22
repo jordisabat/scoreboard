@@ -1,6 +1,6 @@
 export type GameStatus = "scheduled" | "in progress" | "final";
 
-export interface Score {
+export interface ScoreType {
   id: number;
   homeTeam: string;
   awayTeam: string;

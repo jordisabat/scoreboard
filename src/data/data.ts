@@ -1,13 +1,13 @@
-import { ScoreType } from "../../data/types";
+import { Game } from "./types";
 
-const testData: ScoreType[] = [
+export const initialData: Game[] = [
   {
     id: 1,
     homeTeam: "France",
     awayTeam: "Brazil",
-    homeScore: 3,
-    awayScore: 1,
-    status: "final",
+    homeScore: 0,
+    awayScore: 0,
+    status: "scheduled",
   },
   {
     id: 2,
@@ -42,5 +42,3 @@ const testData: ScoreType[] = [
     status: "scheduled",
   },
 ];
-
-export default testData;
