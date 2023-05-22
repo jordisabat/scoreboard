@@ -1,14 +1,8 @@
 import { createRoot } from "react-dom/client";
+import ScoreBoards from "./components/ScoreBoards";
 
 const App = () => {
-  return (
-    <>
-      <div>Argentina 5 - 3 Portugal</div>
-      <div>Spain 1 - 2 Slovenia</div>
-      <div>Italy 1 - 1 Germany</div>
-      <div>Andorra 1 - 0 France</div>
-    </>
-  );
+  return <ScoreBoards />;
 };
 
 const container = document.getElementById("root");
