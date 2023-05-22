@@ -1,7 +1,7 @@
 import Score from "./Score";
 import { Score as ScoreType } from "./ScoreTypes";
 
-const ScoreBoards = ({ scores }: { scores: ScoreType[] }) => {
+const ScoreBoard = ({ scores }: { scores: ScoreType[] }) => {
   return (
     <div className="scoreboards">
       {!scores.length ? (
@@ -28,4 +28,4 @@ const ScoreBoards = ({ scores }: { scores: ScoreType[] }) => {
   );
 };
 
-export default ScoreBoards;
+export default ScoreBoard;

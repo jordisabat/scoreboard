@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { render } from "@testing-library/react";
-import ScoreBoards from "../components/ScoreBoards";
+import ScoreBoards from "../components/ScoreBoard";
 import dummyData from "./fixtures/scores.fixtures";
 
 test("if there are no scores it should displays a default message", () => {

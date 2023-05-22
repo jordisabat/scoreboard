@@ -1,9 +1,12 @@
 import { createRoot } from "react-dom/client";
-import ScoreBoards from "./components/ScoreBoards";
-import dummyData from "./__tests__/fixtures/scores.fixtures";
+import Home from "./components/Home";
 
 const App = () => {
-  return <ScoreBoards scores={dummyData} />;
+  return (
+    <div className="App">
+      <Home />
+    </div>
+  );
 };
 
 const container = document.getElementById("root");
