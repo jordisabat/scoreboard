@@ -1,13 +1,14 @@
-import { Score } from "../../data/types";
+import { Score as ScoreType } from "./types";
+import { sortScores } from "../utils/helper";
 
-const dummyData: Score[] = [
+const initialData: ScoreType[] = [
   {
     id: 1,
     homeTeam: "France",
     awayTeam: "Brazil",
     homeScore: 3,
     awayScore: 1,
-    status: "final",
+    status: "scheduled",
   },
   {
     id: 2,
@@ -43,4 +44,9 @@ const dummyData: Score[] = [
   },
 ];
 
-export default dummyData;
+const fetchData = (): Promise<ScoreType[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(initialData), 2000);
+  });
+};
+export default fetchData;

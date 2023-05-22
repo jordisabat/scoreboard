@@ -1,5 +1,5 @@
 import Score from "./Score";
-import { Score as ScoreType } from "./ScoreTypes";
+import { Score as ScoreType } from "../data/types";
 
 const ScoreBoard = ({ scores }: { scores: ScoreType[] }) => {
   return (

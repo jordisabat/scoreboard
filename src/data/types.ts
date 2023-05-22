@@ -1,4 +1,4 @@
-export type GameStatus = "scheduled" | "inProgress" | "final";
+export type GameStatus = "scheduled" | "in progress" | "final";
 
 export interface Score {
   id: number;

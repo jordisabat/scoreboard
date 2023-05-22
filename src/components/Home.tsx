@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 import ScoreBoard from "./ScoreBoard";
-import { Score } from "./ScoreTypes";
-import dummyData from "../__tests__/fixtures/scores.fixtures";
+import { Score as StoreType } from "../data/types";
+import fetchData from "../data/fetchData";
+import { sortScores } from "../utils/helper";
 
 const Home = () => {
-  const [scores, setScores] = useState<Score[]>([]);
+  const [scores, setScores] = useState<StoreType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = () => {
-      setTimeout(() => {
-        try {
-          setScores(dummyData);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching scores:", error);
-        }
-      }, 2000);
+    const loadAndSortData = async () => {
+      try {
+        setLoading(true);
+        const initialData: StoreType[] = await fetchData();
+        const sortedData = sortScores(initialData);
+        setScores(sortedData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching scores:", error);
+      }
     };
 
-    fetchData();
+    void loadAndSortData();
   }, []);
 
   return loading ? (
