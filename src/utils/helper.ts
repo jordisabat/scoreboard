@@ -4,7 +4,9 @@ const sortGames = (games: GameType[]): GameType[] => {
   return games.sort((current, next) => {
     const currentTotalGoals = current.homeScore + current.awayScore;
     const nextTotalGoals = next.homeScore + next.awayScore;
-    return nextTotalGoals - currentTotalGoals;
+    return nextTotalGoals === currentTotalGoals
+      ? current.id - next.id // If total goals are the same, sort by game ID in ascending order
+      : nextTotalGoals - currentTotalGoals; // Sort by total goals in descending order
   });
 };
 

@@ -76,6 +76,74 @@ describe("filterGames", () => {
 
     expect(sortedGames).toEqual([]);
   });
+
+  test("if games have same number of goals it should return sorted by descending id", () => {
+    const initialGames: GameType[] = [
+      {
+        id: 3,
+        homeTeam: "Team A",
+        awayTeam: "Team B",
+        homeScore: 3,
+        awayScore: 3,
+        status: "in progress",
+      },
+      {
+        id: 2,
+        homeTeam: "Team C",
+        awayTeam: "Team D",
+        homeScore: 1,
+        awayScore: 3,
+        status: "scheduled",
+      },
+      {
+        id: 1,
+        homeTeam: "Team E",
+        awayTeam: "Team F",
+        homeScore: 3,
+        awayScore: 3,
+        status: "in progress",
+      },
+      {
+        id: 4,
+        homeTeam: "Team E",
+        awayTeam: "Team F",
+        homeScore: 3,
+        awayScore: 3,
+        status: "finished",
+      },
+    ];
+
+    const expectedSortedGames: GameType[] = [
+      {
+        id: 1,
+        homeTeam: "Team E",
+        awayTeam: "Team F",
+        homeScore: 3,
+        awayScore: 3,
+        status: "in progress",
+      },
+      {
+        id: 3,
+        homeTeam: "Team A",
+        awayTeam: "Team B",
+        homeScore: 3,
+        awayScore: 3,
+        status: "in progress",
+      },
+      {
+        id: 2,
+        homeTeam: "Team C",
+        awayTeam: "Team D",
+        homeScore: 1,
+        awayScore: 3,
+        status: "scheduled",
+      },
+    ];
+
+    const sortedGames: GameType[] = filterGames(initialGames);
+
+    expect(sortedGames).toEqual(expectedSortedGames);
+  });
 });
 
 describe("capitalize", () => {
