@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import Home from "./components/Home";
+import { ThemeProvider } from "@material-tailwind/react";
 
 const queryClient: QueryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +15,9 @@ const queryClient: QueryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Home />
+      <ThemeProvider>
+        <Home />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

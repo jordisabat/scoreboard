@@ -12,7 +12,7 @@ const match: GameProps = {
   status: "scheduled",
 };
 
-test("renders the game information correctly", async () => {
+test("renders the game information correctly", () => {
   const screen: RenderResult = render(
     <Game
       id={match.id}
@@ -25,10 +25,12 @@ test("renders the game information correctly", async () => {
     />
   );
 
-  const gameWrapper: HTMLElement = await screen.findByTestId("game");
-  expect(gameWrapper.textContent).toContain(
-    "1. Home Team 3 - Away Team 1 (scheduled)"
-  );
+  expect(screen.getByText("Home Team")).toBeTruthy();
+  expect(screen.getByText("Away Team")).toBeTruthy();
+  expect(screen.getByText("Game 1 - scheduled")).toBeTruthy();
+  expect(screen.getByText("3")).toBeTruthy();
+  expect(screen.getByText("1")).toBeTruthy();
+
   cleanup();
   screen.unmount();
 });
