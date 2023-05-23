@@ -3,7 +3,7 @@ import { GameType } from "../data/types";
 
 const ScoreBoard = ({ games }: { games: GameType[] }) => {
   return (
-    <div className="mx-auto my-0">
+    <div className="mx-auto my-0 w-[450px]">
       {!games.length ? (
         <>
           <h2>Scoreboard</h2>

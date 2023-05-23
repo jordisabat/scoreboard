@@ -9,11 +9,11 @@ const match: GameProps = {
   awayTeam: "Away Team",
   homeScore: 3,
   awayScore: 1,
-  status: "Final",
+  status: "scheduled",
 };
 
 test("renders the game information correctly", async () => {
-  const game: RenderResult = render(
+  const screen: RenderResult = render(
     <Game
       id={match.id}
       homeTeam={match.homeTeam}
@@ -25,9 +25,10 @@ test("renders the game information correctly", async () => {
     />
   );
 
-  const gameWrapper: HTMLElement = await game.findByTestId("game");
+  const gameWrapper: HTMLElement = await screen.findByTestId("game");
   expect(gameWrapper.textContent).toContain(
-    "1. Home Team 3 - Away Team 1 (Final)"
+    "1. Home Team 3 - Away Team 1 (scheduled)"
   );
   cleanup();
+  screen.unmount();
 });

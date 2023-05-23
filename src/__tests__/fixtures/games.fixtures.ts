@@ -7,7 +7,7 @@ const testData: GameType[] = [
     awayTeam: "Brazil",
     homeScore: 3,
     awayScore: 1,
-    status: "final",
+    status: "in progress",
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const testData: GameType[] = [
     awayTeam: "Belgium",
     homeScore: 0,
     awayScore: 0,
-    status: "scheduled",
+    status: "finished",
   },
 ];
 

@@ -15,7 +15,7 @@ export const initialData: GameType[] = [
     awayTeam: "Italy",
     homeScore: 2,
     awayScore: 2,
-    status: "scheduled",
+    status: "finished",
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ export const initialData: GameType[] = [
     awayTeam: "Argentina",
     homeScore: 0,
     awayScore: 0,
-    status: "scheduled",
+    status: "in progress",
   },
   {
     id: 5,

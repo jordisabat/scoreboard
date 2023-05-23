@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { GameType } from "../data/types";
-import { sortGames } from "../utils/helper";
+import { filterGames } from "../utils/helper";
 
 const games: GameType[] = [
   {
@@ -9,7 +9,7 @@ const games: GameType[] = [
     awayTeam: "Team B",
     homeScore: 2,
     awayScore: 1,
-    status: "final",
+    status: "in progress",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const games: GameType[] = [
     awayTeam: "Team D",
     homeScore: 3,
     awayScore: 0,
-    status: "final",
+    status: "scheduled",
   },
   {
     id: 3,
@@ -27,9 +27,17 @@ const games: GameType[] = [
     awayScore: 1,
     status: "in progress",
   },
+  {
+    id: 4,
+    homeTeam: "Team E",
+    awayTeam: "Team F",
+    homeScore: 3,
+    awayScore: 3,
+    status: "finished",
+  },
 ];
 
-test("should return games sorted in descending order based on total number of goals", () => {
+test("should return active games sorted in descending order based on total number of goals", () => {
   const expectedSortedGames: GameType[] = [
     {
       id: 3,
@@ -45,7 +53,7 @@ test("should return games sorted in descending order based on total number of go
       awayTeam: "Team B",
       homeScore: 2,
       awayScore: 1,
-      status: "final",
+      status: "in progress",
     },
     {
       id: 2,
@@ -53,11 +61,17 @@ test("should return games sorted in descending order based on total number of go
       awayTeam: "Team D",
       homeScore: 3,
       awayScore: 0,
-      status: "final",
+      status: "scheduled",
     },
   ];
 
-  const sortedGames: GameType[] = sortGames(games);
+  const sortedGames: GameType[] = filterGames(games);
 
   expect(sortedGames).toEqual(expectedSortedGames);
+});
+
+test("should return an empty array if are no games", () => {
+  const sortedGames: GameType[] = filterGames([] as GameType[]);
+
+  expect(sortedGames).toEqual([]);
 });
