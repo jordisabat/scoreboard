@@ -10,8 +10,8 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
-  Alert,
 } from "@material-tailwind/react";
+import AlertComponent from "../common/AlertComponent";
 
 const Home = () => {
   const results = useQuery(["games"], fetchData, {
@@ -114,20 +114,7 @@ const Home = () => {
           <ControlBoard game={game} onSave={handleOnChange} />
         </DialogBody>
       </Dialog>
-      <div className="flex w-full flex-col gap-2 pt-8">
-        <Alert
-          color="green"
-          variant="outlined"
-          open={showAlert}
-          onClose={() => setShowAlert(false)}
-          animate={{
-            mount: { y: 0 },
-            unmount: { y: 100 },
-          }}
-        >
-          Game saved successfully!
-        </Alert>
-      </div>
+      <AlertComponent showAlert={showAlert} closeAlert={handleSave} />
     </div>
   );
 };
