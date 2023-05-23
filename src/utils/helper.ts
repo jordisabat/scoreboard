@@ -14,3 +14,7 @@ export const filterGames = (games: GameType[]): GameType[] => {
   });
   return sortGames(activeGames);
 };
+
+export const capitalize = (string: string): string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};

@@ -27,7 +27,7 @@ test("renders the game information correctly", () => {
 
   expect(screen.getByText("Home Team")).toBeTruthy();
   expect(screen.getByText("Away Team")).toBeTruthy();
-  expect(screen.getByText("Game 1 - scheduled")).toBeTruthy();
+  expect(screen.getByText("Game 1 - Scheduled")).toBeTruthy();
   expect(screen.getByText("3")).toBeTruthy();
   expect(screen.getByText("1")).toBeTruthy();
 

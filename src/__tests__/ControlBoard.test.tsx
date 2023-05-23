@@ -1,12 +1,21 @@
 import { expect, test } from "vitest";
-import { fireEvent, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import testData from "./fixtures/games.fixtures";
 import ControlBoard from "../components/ControlBoard";
+import { GameType } from "../data/types";
 
-test("if there are no games it should displays a default game", () => {
-  const screen = render(<ControlBoard games={[]} onSave={() => {}} />);
-  // TODO - add tests for selectors
-  const gameSelector = screen.getByTestId("game-selector") as HTMLSelectElement;
+const defaultGame: GameType = {
+  id: 0,
+  homeTeam: "",
+  awayTeam: "",
+  homeScore: 0,
+  awayScore: 0,
+  status: "scheduled",
+};
+
+test("if default game is passed it should displays a default game", () => {
+  const screen = render(<ControlBoard game={defaultGame} onSave={() => {}} />);
+
   const statusSelector = screen.getByTestId(
     "status-selector"
   ) as HTMLSelectElement;
@@ -23,7 +32,6 @@ test("if there are no games it should displays a default game", () => {
     "Away Score"
   ) as HTMLInputElement;
 
-  expect(gameSelector.value).toBe("0");
   expect(statusSelector.value).toBe("scheduled");
   expect(homeTeamInput.value).toBe("");
   expect(awayTeamInput.value).toBe("");
@@ -37,11 +45,17 @@ test("if there are no games it should displays a default game", () => {
   screen.unmount();
 });
 
-test("on start it should have empty form", () => {
-  const screen = render(<ControlBoard games={testData} onSave={() => {}} />);
+test("when a game is passed it should pre-fill that game", () => {
+  const testGame: GameType = {
+    id: 1,
+    homeTeam: "France",
+    awayTeam: "Brazil",
+    homeScore: 3,
+    awayScore: 1,
+    status: "in progress",
+  };
+  const screen = render(<ControlBoard game={testGame} onSave={() => {}} />);
 
-  // TODO - add tests for selectors
-  const gameSelector = screen.getByTestId("game-selector") as HTMLSelectElement;
   const statusSelector = screen.getByTestId(
     "status-selector"
   ) as HTMLSelectElement;
@@ -58,42 +72,6 @@ test("on start it should have empty form", () => {
     "Away Score"
   ) as HTMLInputElement;
 
-  expect(gameSelector.value).toBe("0");
-  expect(statusSelector.value).toBe("scheduled");
-  expect(homeTeamInput.value).toBe("");
-  expect(awayTeamInput.value).toBe("");
-  expect(homeScoreInput.value).toBe("0");
-  expect(awayScoreInput.value).toBe("0");
-  expect(
-    screen.getByRole("button", {
-      name: "Add Game",
-    })
-  ).toBeTruthy();
-  screen.unmount();
-});
-
-test("When a game is selected it should pre-fill that game", () => {
-  const screen = render(<ControlBoard games={testData} onSave={() => {}} />);
-  const gameSelector = screen.getByTestId("game-selector") as HTMLSelectElement;
-  const statusSelector = screen.getByTestId(
-    "status-selector"
-  ) as HTMLSelectElement;
-  const homeTeamInput = screen.getByPlaceholderText(
-    "Home Team"
-  ) as HTMLInputElement;
-  const awayTeamInput = screen.getByPlaceholderText(
-    "Away Team"
-  ) as HTMLInputElement;
-  const homeScoreInput = screen.getByPlaceholderText(
-    "Home Score"
-  ) as HTMLInputElement;
-  const awayScoreInput = screen.getByPlaceholderText(
-    "Away Score"
-  ) as HTMLInputElement;
-
-  fireEvent.change(gameSelector, { target: { value: "1" } });
-
-  expect(gameSelector.value).toBe("1");
   expect(statusSelector.value).toBe("in progress");
   expect(homeTeamInput.value).toBe("France");
   expect(awayTeamInput.value).toBe("Brazil");

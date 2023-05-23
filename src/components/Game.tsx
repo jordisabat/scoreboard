@@ -1,5 +1,5 @@
 import { Chip } from "@material-tailwind/react";
-import React from "react";
+import { capitalize } from "../utils/helper";
 
 import { GameProps } from "./Interfaces";
 
@@ -8,12 +8,12 @@ const Game = (props: GameProps) => {
 
   return (
     <div data-testid="game" className="w-full">
-      <div className="flex flex-col px-8">
+      <div className="flex flex-col border-b-2 px-8 py-2">
         <div className="pb-2">
-          Game {id} - {status}
+          Game {id} - {capitalize(status)}
         </div>
-        <div className="flex flex-col ">
-          <div className="flex flex-row justify-between">
+        <div className="flex flex-col">
+          <div className="my-1 flex flex-row justify-between ">
             <div className="font-bold">{homeTeam}</div>
             <div className="">
               <Chip value={homeScore} />

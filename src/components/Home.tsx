@@ -108,7 +108,7 @@ const Home = () => {
           </div>
         </DialogHeader>
         <DialogBody divider>
-          <ControlBoard gameToEdit={game} onSave={handleOnChange} />
+          <ControlBoard game={game} onSave={handleOnChange} />
         </DialogBody>
       </Dialog>
 

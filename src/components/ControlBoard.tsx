@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { GameType, GameStatus } from "../data/types";
 import { Button, Input } from "@material-tailwind/react";
+import { capitalize } from "../utils/helper";
 
-const GameStatusList: string[] = ["Scheduled", "In progress", "Finished"];
+const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
 
 interface IProps {
-  gameToEdit: GameType;
+  game: GameType;
   onSave: (game: GameType) => void;
 }
 
 const ControlBoard = (props: IProps) => {
-  const { gameToEdit, onSave } = props || [];
+  const { game: gameToEdit, onSave } = props || [];
 
-  const [game, setGame] = useState<GameType>(gameToEdit);
+  const [gameItem, setGameItem] = useState<GameType>(gameToEdit);
 
   const handleOnChange = () => {
-    onSave(game);
+    onSave(gameItem);
   };
 
   return (
@@ -30,14 +31,16 @@ const ControlBoard = (props: IProps) => {
               data-testid="status-selector"
               id="status"
               name="status"
-              value={game.status}
+              value={gameItem.status}
               onChange={(e) => {
-                const newStatus = e.target.value.toLowerCase() as GameStatus;
-                setGame({ ...game, status: newStatus });
+                setGameItem({
+                  ...gameItem,
+                  status: e.target.value as GameStatus,
+                });
               }}
             >
               {GameStatusList.map((status) => (
-                <option key={status} value={status}>
+                <option key={status} value={status} label={capitalize(status)}>
                   {status}
                 </option>
               ))}
@@ -52,9 +55,9 @@ const ControlBoard = (props: IProps) => {
             type="text"
             id="home-team"
             placeholder="Home Team"
-            value={game.homeTeam}
+            value={gameItem.homeTeam}
             onChange={(e) => {
-              setGame({ ...game, homeTeam: e.target.value });
+              setGameItem({ ...gameItem, homeTeam: e.target.value });
             }}
           />
         </div>
@@ -68,9 +71,9 @@ const ControlBoard = (props: IProps) => {
               type="text"
               id="away-team"
               placeholder="Away Team"
-              value={game.awayTeam}
+              value={gameItem.awayTeam}
               onChange={(e) => {
-                setGame({ ...game, awayTeam: e.target.value });
+                setGameItem({ ...gameItem, awayTeam: e.target.value });
               }}
             />
           </div>
@@ -86,9 +89,12 @@ const ControlBoard = (props: IProps) => {
               type="number"
               id="home-score"
               placeholder="Home Score"
-              value={game.homeScore}
+              value={gameItem.homeScore}
               onChange={(e) => {
-                setGame({ ...game, homeScore: parseInt(e.target.value) });
+                setGameItem({
+                  ...gameItem,
+                  homeScore: parseInt(e.target.value),
+                });
               }}
             />
           </div>
@@ -102,9 +108,12 @@ const ControlBoard = (props: IProps) => {
               type="number"
               id="away-score"
               placeholder="Away Score"
-              value={game.awayScore}
+              value={gameItem.awayScore}
               onChange={(e) => {
-                setGame({ ...game, awayScore: parseInt(e.target.value) });
+                setGameItem({
+                  ...gameItem,
+                  awayScore: parseInt(e.target.value),
+                });
               }}
             />
           </div>
@@ -112,7 +121,7 @@ const ControlBoard = (props: IProps) => {
       </div>
       <div className="ml-auto pb-4">
         <Button variant="gradient" color="green" onClick={handleOnChange}>
-          {game.id == 0 ? "Add Game" : "Update Game"}
+          {gameItem.id == 0 ? "Add Game" : "Update Game"}
         </Button>
       </div>
     </div>
