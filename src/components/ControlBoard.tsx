@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GameType, GameStatus } from "../data/types";
-import { Button, Input } from "@material-tailwind/react";
+import { Button, Input, Select, Option } from "@material-tailwind/react";
 import { capitalize } from "../utils/helper";
 
 const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
@@ -23,11 +23,11 @@ const ControlBoard = (props: IProps) => {
     <div className="flex flex-col">
       <div className="flex flex-col justify-around pb-4 md:flex-row">
         <div className="pb-4">
-          <div>
+          <div className="flex justify-start pb-2">
             <label htmlFor="away-team">Game status</label>
           </div>
           <div>
-            <select
+            <Select
               data-testid="status-selector"
               id="status"
               name="status"
@@ -35,16 +35,16 @@ const ControlBoard = (props: IProps) => {
               onChange={(e) => {
                 setGameItem({
                   ...gameItem,
-                  status: e.target.value as GameStatus,
+                  status: e as GameStatus,
                 });
               }}
             >
               {GameStatusList.map((status) => (
-                <option key={status} value={status} label={capitalize(status)}>
-                  {status}
-                </option>
+                <Option key={status} value={status}>
+                  {capitalize(status)}
+                </Option>
               ))}
-            </select>
+            </Select>
           </div>
         </div>
       </div>
