@@ -74,15 +74,17 @@ const Home = () => {
       </div>
       <Dialog size="lg" open={isModalOpen} handler={handleOpen}>
         <DialogHeader>
-          {}
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
+          <div className="flex flex-row">Game Management</div>
+          <div className="ml-auto">
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>Cancel</span>
+            </Button>
+          </div>
         </DialogHeader>
         <DialogBody divider>
           <ControlBoard games={filteredGames} onSave={handleOnChange} />
