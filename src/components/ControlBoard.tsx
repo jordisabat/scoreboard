@@ -2,26 +2,17 @@ import { useState } from "react";
 import { GameType, GameStatus } from "../data/types";
 import { Button, Input } from "@material-tailwind/react";
 
-const defaultGame: GameType = {
-  id: 0,
-  homeTeam: "",
-  awayTeam: "",
-  homeScore: 0,
-  awayScore: 0,
-  status: "scheduled",
-};
-
-const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
+const GameStatusList: string[] = ["Scheduled", "In progress", "Finished"];
 
 interface IProps {
-  games: GameType[];
+  gameToEdit: GameType;
   onSave: (game: GameType) => void;
 }
 
 const ControlBoard = (props: IProps) => {
-  const { games, onSave } = props || [];
+  const { gameToEdit, onSave } = props || [];
 
-  const [game, setGame] = useState<GameType>(defaultGame);
+  const [game, setGame] = useState<GameType>(gameToEdit);
 
   const handleOnChange = () => {
     onSave(game);
@@ -30,33 +21,6 @@ const ControlBoard = (props: IProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col justify-around pb-4 md:flex-row">
-        <div className="pb-4">
-          <div className="py-1">
-            <label htmlFor="home-team">Select game</label>
-          </div>
-          <div>
-            <select
-              data-testid="game-selector"
-              id="id"
-              name="id"
-              onChange={(e) => {
-                setGame(
-                  games.find((g) => g.id === parseInt(e.target.value)) ??
-                    defaultGame
-                );
-              }}
-            >
-              <option key={0} value={0}>
-                Add new game...
-              </option>
-              {games.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.homeTeam + " vs " + g.awayTeam}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
         <div className="pb-4">
           <div>
             <label htmlFor="away-team">Game status</label>
@@ -68,7 +32,8 @@ const ControlBoard = (props: IProps) => {
               name="status"
               value={game.status}
               onChange={(e) => {
-                setGame({ ...game, status: e.target.value as GameStatus });
+                const newStatus = e.target.value.toLowerCase() as GameStatus;
+                setGame({ ...game, status: newStatus });
               }}
             >
               {GameStatusList.map((status) => (

@@ -2,7 +2,13 @@ import Game from "./Game";
 import { GameType } from "../data/types";
 import { List, ListItem, Card } from "@material-tailwind/react";
 
-const ScoreBoard = ({ games }: { games: GameType[] }) => {
+const ScoreBoard = ({
+  games,
+  onOpenGame,
+}: {
+  games: GameType[];
+  onOpenGame: (game: GameType) => void;
+}) => {
   return (
     <div className="w-[450px]">
       {!games.length ? (
@@ -15,10 +21,7 @@ const ScoreBoard = ({ games }: { games: GameType[] }) => {
           <Card>
             <List>
               {games.map((game) => (
-                <ListItem
-                  key={game.id}
-                  onClick={() => console.log(`Open modal for ${game.id}`)}
-                >
+                <ListItem key={game.id} onClick={() => onOpenGame(game)}>
                   <Game
                     id={game.id}
                     homeTeam={game.homeTeam}

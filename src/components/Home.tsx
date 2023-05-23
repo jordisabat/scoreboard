@@ -20,8 +20,22 @@ const Home = () => {
   const [games, setGames] = useState<GameType[]>([] as GameType[]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  const defaultGame: GameType = {
+    id: 0,
+    homeTeam: "",
+    awayTeam: "",
+    homeScore: 0,
+    awayScore: 0,
+    status: "scheduled",
+  };
+  const [game, setGame] = useState(defaultGame);
 
   const handleOpen = () => setIsModalOpen(!isModalOpen);
+
+  const handleOpenGame = (game: GameType) => {
+    setGame(game);
+    handleOpen();
+  };
 
   const handleSave = () => {
     setSaved(true);
@@ -64,17 +78,24 @@ const Home = () => {
     handleOpen();
   };
 
+  const handleAddGame = () => {
+    setGame(defaultGame);
+    handleOpen();
+  };
+
   const filteredGames: GameType[] = games ? filterGames(games) : [];
 
   return (
     <div className="m-0 mx-auto my-0 h-screen p-10 ">
-      <ScoreBoard games={filteredGames} />
+      <ScoreBoard games={filteredGames} onOpenGame={handleOpenGame} />
       <div className="flex flex-row  pt-4">
-        <Button onClick={handleOpen}>Edit Game</Button>
+        <Button onClick={handleAddGame}>Add Game</Button>
       </div>
       <Dialog size="lg" open={isModalOpen} handler={handleOpen}>
         <DialogHeader>
-          <div className="flex flex-row">Game Management</div>
+          <div className="flex flex-row">
+            {game.id === 0 ? "Add new game" : "Edit game"}
+          </div>
           <div className="ml-auto">
             <Button
               variant="text"
@@ -87,7 +108,7 @@ const Home = () => {
           </div>
         </DialogHeader>
         <DialogBody divider>
-          <ControlBoard games={filteredGames} onSave={handleOnChange} />
+          <ControlBoard gameToEdit={game} onSave={handleOnChange} />
         </DialogBody>
       </Dialog>
 
