@@ -2,6 +2,8 @@ import { useState } from "react";
 import { GameType, GameStatus } from "../data/types";
 import { Button, Input, Select, Option } from "@material-tailwind/react";
 import { capitalize } from "../utils/helper";
+import { isGameValid } from "../utils/validations";
+import AlertComponent from "../common/AlertComponent";
 
 const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
 
@@ -13,9 +15,18 @@ const ControlBoard = ({
   onSave: (game: GameType) => void;
 }) => {
   const [gameItem, setGameItem] = useState<GameType>(gameToEdit);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleOnChange = () => {
-    onSave(gameItem);
+    if (isGameValid(gameItem)) {
+      onSave(gameItem);
+    } else {
+      setShowAlert(true);
+    }
+  };
+
+  const handleHideAlert = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -123,6 +134,12 @@ const ControlBoard = ({
           {gameItem.id == 0 ? "Add Game" : "Update Game"}
         </Button>
       </div>
+      <AlertComponent
+        showAlert={showAlert}
+        hideAlert={handleHideAlert}
+        color="red"
+        message="All fields are required and if the game is scheduled, scores must be 0."
+      />
     </div>
   );
 };

@@ -30,23 +30,20 @@ const Home = () => {
   };
   const [game, setGame] = useState(defaultGame);
 
-  const handleOpen = () => setShowModal(!showModal);
+  const handleModal = () => setShowModal(!showModal);
 
   const handleOpenGame = (game: GameType) => {
     setGame(game);
-    handleOpen();
+    handleModal();
   };
 
-  const handleSave = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 5000);
+  const handleHideAlert = () => {
+    setShowAlert(false);
   };
 
   const handleAddGame = () => {
     setGame(defaultGame);
-    handleOpen();
+    handleModal();
   };
 
   const updateGames = (games: GameType[]) => {
@@ -84,8 +81,8 @@ const Home = () => {
         })
       );
     }
-    handleSave();
-    handleOpen();
+    setShowAlert(true);
+    handleModal();
   };
 
   return (
@@ -94,7 +91,7 @@ const Home = () => {
       <div className="flex flex-row  pt-4">
         <Button onClick={handleAddGame}>Add Game</Button>
       </div>
-      <Dialog size="lg" open={showModal} handler={handleOpen}>
+      <Dialog size="lg" open={showModal} handler={handleModal}>
         <DialogHeader>
           <div className="flex flex-row">
             {game.id === 0 ? "Add new game" : "Edit game"}
@@ -103,7 +100,7 @@ const Home = () => {
             <Button
               variant="text"
               color="red"
-              onClick={handleOpen}
+              onClick={handleModal}
               className="mr-1"
             >
               <span>Cancel</span>
@@ -114,7 +111,16 @@ const Home = () => {
           <ControlBoard game={game} onSave={handleOnChange} />
         </DialogBody>
       </Dialog>
-      <AlertComponent showAlert={showAlert} closeAlert={handleSave} />
+      <AlertComponent
+        showAlert={showAlert}
+        hideAlert={handleHideAlert}
+        color="green"
+        message={
+          game.id === 0
+            ? "Game added successfully!"
+            : `Game ${game.id} - ${game.homeTeam} vs ${game.awayTeam} - updated! `
+        }
+      />
     </div>
   );
 };
