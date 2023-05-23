@@ -18,6 +18,7 @@ const ControlBoard = ({
     onSave(gameItem);
   };
 
+  console.log(gameItem);
   return (
     <div className="flex flex-col">
       <div className="flex flex-col justify-around pb-4 md:flex-row">

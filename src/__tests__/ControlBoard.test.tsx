@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
-import { render } from "@testing-library/react";
-import testData from "./fixtures/games.fixtures";
+import { cleanup, render } from "@testing-library/react";
 import ControlBoard from "../components/ControlBoard";
 import { GameType } from "../data/types";
 
@@ -16,9 +15,7 @@ const defaultGame: GameType = {
 test("if default game is passed it should displays a default game", () => {
   const screen = render(<ControlBoard game={defaultGame} onSave={() => {}} />);
 
-  const statusSelector = screen.getByTestId(
-    "status-selector"
-  ) as HTMLSelectElement;
+  const statusSelector = screen.getByTestId("status-selector");
   const homeTeamInput = screen.getByPlaceholderText(
     "Home Team"
   ) as HTMLInputElement;
@@ -32,7 +29,7 @@ test("if default game is passed it should displays a default game", () => {
     "Away Score"
   ) as HTMLInputElement;
 
-  expect(statusSelector.value).toBe("scheduled");
+  expect(statusSelector.childNodes[0].textContent).toBe("Scheduled");
   expect(homeTeamInput.value).toBe("");
   expect(awayTeamInput.value).toBe("");
   expect(homeScoreInput.value).toBe("0");
@@ -42,6 +39,8 @@ test("if default game is passed it should displays a default game", () => {
       name: "Add Game",
     })
   ).toBeTruthy();
+
+  cleanup();
   screen.unmount();
 });
 
@@ -56,9 +55,7 @@ test("when a game is passed it should pre-fill that game", () => {
   };
   const screen = render(<ControlBoard game={testGame} onSave={() => {}} />);
 
-  const statusSelector = screen.getByTestId(
-    "status-selector"
-  ) as HTMLSelectElement;
+  const statusSelector = screen.getByTestId("status-selector");
   const homeTeamInput = screen.getByPlaceholderText(
     "Home Team"
   ) as HTMLInputElement;
@@ -72,7 +69,7 @@ test("when a game is passed it should pre-fill that game", () => {
     "Away Score"
   ) as HTMLInputElement;
 
-  expect(statusSelector.value).toBe("in progress");
+  expect(statusSelector.childNodes[0].textContent).toBe("In progress");
   expect(homeTeamInput.value).toBe("France");
   expect(awayTeamInput.value).toBe("Brazil");
   expect(homeScoreInput.value).toBe("3");
@@ -83,5 +80,6 @@ test("when a game is passed it should pre-fill that game", () => {
     })
   ).toBeTruthy();
 
+  cleanup();
   screen.unmount();
 });

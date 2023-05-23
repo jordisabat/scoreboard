@@ -20,7 +20,15 @@ const Home = () => {
   const [games, setGames] = useState<GameType[]>([] as GameType[]);
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [game, setGame] = useState({} as GameType);
+  const defaultGame: GameType = {
+    id: 0,
+    homeTeam: "",
+    awayTeam: "",
+    homeScore: 0,
+    awayScore: 0,
+    status: "scheduled",
+  };
+  const [game, setGame] = useState(defaultGame);
 
   const handleOpen = () => setShowModal(!showModal);
 
@@ -37,14 +45,6 @@ const Home = () => {
   };
 
   const handleAddGame = () => {
-    const defaultGame: GameType = {
-      id: 0,
-      homeTeam: "",
-      awayTeam: "",
-      homeScore: 0,
-      awayScore: 0,
-      status: "scheduled",
-    };
     setGame(defaultGame);
     handleOpen();
   };
