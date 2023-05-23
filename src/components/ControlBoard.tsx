@@ -5,14 +5,13 @@ import { capitalize } from "../utils/helper";
 
 const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
 
-interface IProps {
+const ControlBoard = ({
+  game: gameToEdit,
+  onSave,
+}: {
   game: GameType;
   onSave: (game: GameType) => void;
-}
-
-const ControlBoard = (props: IProps) => {
-  const { game: gameToEdit, onSave } = props || [];
-
+}) => {
   const [gameItem, setGameItem] = useState<GameType>(gameToEdit);
 
   const handleOnChange = () => {

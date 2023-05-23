@@ -15,22 +15,14 @@ import {
 
 const Home = () => {
   const results = useQuery(["games"], fetchData, {
-    refetchInterval: 600000, // we can set this to 1 minute to keep the data fresh
+    refetchInterval: 600000, // with a real API we should configure this
   });
   const [games, setGames] = useState<GameType[]>([] as GameType[]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const defaultGame: GameType = {
-    id: 0,
-    homeTeam: "",
-    awayTeam: "",
-    homeScore: 0,
-    awayScore: 0,
-    status: "scheduled",
-  };
-  const [game, setGame] = useState(defaultGame);
+  const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [game, setGame] = useState({} as GameType);
 
-  const handleOpen = () => setIsModalOpen(!isModalOpen);
+  const handleOpen = () => setShowModal(!showModal);
 
   const handleOpenGame = (game: GameType) => {
     setGame(game);
@@ -38,18 +30,29 @@ const Home = () => {
   };
 
   const handleSave = () => {
-    setSaved(true);
+    setShowAlert(true);
     setTimeout(() => {
-      setSaved(false);
+      setShowAlert(false);
     }, 5000);
   };
 
-  // this will not be used in the final version
-  useEffect(() => {
-    if (results.data) {
-      setGames(results.data);
-    }
-  }, [results.data]);
+  const handleAddGame = () => {
+    const defaultGame: GameType = {
+      id: 0,
+      homeTeam: "",
+      awayTeam: "",
+      homeScore: 0,
+      awayScore: 0,
+      status: "scheduled",
+    };
+    setGame(defaultGame);
+    handleOpen();
+  };
+
+  const updateGames = (games: GameType[]) => {
+    const filteredGames: GameType[] = games ? filterGames(games) : [];
+    setGames(filteredGames);
+  };
 
   const getHighestID = (): number => {
     return games.reduce((maxId, game) => {
@@ -57,16 +60,23 @@ const Home = () => {
     }, 0);
   };
 
-  const handleOnChange = (updatedGame: GameType) => {
-    // here we will call the POST endpoint to save the game
-    // for now we will just update the state
+  // this will not be used in the final version
+  useEffect(() => {
+    if (results.data) {
+      updateGames(results.data);
+    }
+  }, [results.data]);
 
+  // here we will call the POST endpoint to save the game
+  // for now we will just update the state
+  const handleOnChange = (updatedGame: GameType) => {
     if (updatedGame.id === 0) {
       updatedGame.id = getHighestID() + 1;
-      setGames((prev) => [...prev, updatedGame]);
+
+      updateGames([...games, updatedGame]);
     } else {
-      setGames((prev) =>
-        prev.map((game): GameType => {
+      updateGames(
+        games.map((game): GameType => {
           if (game.id === updatedGame.id) {
             return updatedGame;
           }
@@ -78,20 +88,13 @@ const Home = () => {
     handleOpen();
   };
 
-  const handleAddGame = () => {
-    setGame(defaultGame);
-    handleOpen();
-  };
-
-  const filteredGames: GameType[] = games ? filterGames(games) : [];
-
   return (
     <div className="m-0 mx-auto my-0 h-screen p-10 ">
-      <ScoreBoard games={filteredGames} onOpenGame={handleOpenGame} />
+      <ScoreBoard games={games} onOpenGame={handleOpenGame} />
       <div className="flex flex-row  pt-4">
         <Button onClick={handleAddGame}>Add Game</Button>
       </div>
-      <Dialog size="lg" open={isModalOpen} handler={handleOpen}>
+      <Dialog size="lg" open={showModal} handler={handleOpen}>
         <DialogHeader>
           <div className="flex flex-row">
             {game.id === 0 ? "Add new game" : "Edit game"}
@@ -111,13 +114,12 @@ const Home = () => {
           <ControlBoard game={game} onSave={handleOnChange} />
         </DialogBody>
       </Dialog>
-
       <div className="flex w-full flex-col gap-2 pt-8">
         <Alert
           color="green"
           variant="outlined"
-          open={saved}
-          onClose={() => setSaved(false)}
+          open={showAlert}
+          onClose={() => setShowAlert(false)}
           animate={{
             mount: { y: 0 },
             unmount: { y: 100 },
