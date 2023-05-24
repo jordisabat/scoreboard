@@ -11,10 +11,18 @@ const ControlBoard = ({
   game: gameToEdit,
   onSave,
 }: {
-  game: GameType;
+  game: GameType | undefined;
   onSave: (game: GameType) => void;
 }) => {
-  const [gameItem, setGameItem] = useState<GameType>(gameToEdit);
+  const defaultGame: GameType = {
+    id: 0,
+    homeTeam: "",
+    awayTeam: "",
+    homeScore: 0,
+    awayScore: 0,
+    status: "scheduled",
+  };
+  const [gameItem, setGameItem] = useState<GameType>(gameToEdit || defaultGame);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleOnChange = () => {

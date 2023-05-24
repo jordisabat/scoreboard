@@ -20,15 +20,8 @@ const Home = () => {
   const [games, setGames] = useState<GameType[]>([] as GameType[]);
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const defaultGame: GameType = {
-    id: 0,
-    homeTeam: "",
-    awayTeam: "",
-    homeScore: 0,
-    awayScore: 0,
-    status: "scheduled",
-  };
-  const [game, setGame] = useState(defaultGame);
+
+  const [game, setGame] = useState<GameType | undefined>();
 
   const handleModal = () => setShowModal(!showModal);
 
@@ -42,7 +35,7 @@ const Home = () => {
   };
 
   const handleAddGame = () => {
-    setGame(defaultGame);
+    setGame(undefined);
     handleModal();
   };
 
@@ -94,7 +87,7 @@ const Home = () => {
       <Dialog size="lg" open={showModal} handler={handleModal}>
         <DialogHeader>
           <div className="flex flex-row">
-            {game.id === 0 ? "Add new game" : "Edit game"}
+            {game && game.id === 0 ? "Add new game" : "Edit game"}
           </div>
           <div className="ml-auto">
             <Button
@@ -116,9 +109,9 @@ const Home = () => {
         hideAlert={handleHideAlert}
         color="green"
         message={
-          game.id === 0
-            ? "Game added successfully!"
-            : `Game ${game.id} - ${game.homeTeam} vs ${game.awayTeam} - updated! `
+          game && game.id !== 0
+            ? `Game ${game.id} - ${game.homeTeam} vs ${game.awayTeam} - updated!`
+            : "Game added successfully!"
         }
       />
     </div>
