@@ -41,6 +41,7 @@ const Home = () => {
 
   const updateGames = (games: GameType[]) => {
     const filteredGames: GameType[] = games ? filterGames(games) : [];
+    console.log(filteredGames);
     setGames(filteredGames);
   };
 
@@ -87,7 +88,8 @@ const Home = () => {
       <Dialog size="lg" open={showModal} handler={handleModal}>
         <DialogHeader>
           <div className="flex flex-row">
-            {game && game.id === 0 ? "Add new game" : "Edit game"}
+            {game && game.id === 0 && "Add new game"}
+            {game && game.id > 0 && `${game.homeTeam} vs ${game.awayTeam}`}
           </div>
           <div className="ml-auto">
             <Button

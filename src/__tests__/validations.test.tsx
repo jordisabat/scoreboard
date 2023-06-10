@@ -1,14 +1,13 @@
 import { expect, test } from "vitest";
-import { GameType } from "../data/types"; // Replace "your-module" with the actual path to your module
-import { isGameValid } from "../utils/validations";
+import { GameEvent, GameType } from "../data/types"; // Replace "your-module" with the actual path to your module
+import { isGameEventValid, isGameValid } from "../utils/validations";
 
 test("Valid game item with scheduled status", () => {
   const gameItem: GameType = {
-    id: 1,
+    id: 0,
     homeTeam: "Team A",
     awayTeam: "Team B",
-    homeScore: 0,
-    awayScore: 0,
+    gameEvents: [],
     status: "scheduled",
   };
 
@@ -16,27 +15,12 @@ test("Valid game item with scheduled status", () => {
   expect(isValid).toBe(true);
 });
 
-test("Valid game item with completed status", () => {
+test("InValid game item with completed status", () => {
   const gameItem: GameType = {
-    id: 1,
-    homeTeam: "Team A",
-    awayTeam: "Team B",
-    homeScore: 2,
-    awayScore: 1,
-    status: "in progress",
-  };
-
-  const isValid = isGameValid(gameItem);
-  expect(isValid).toBe(true);
-});
-
-test("Invalid game item with missing home team", () => {
-  const gameItem: GameType = {
-    id: 1,
+    id: 0,
     homeTeam: "",
     awayTeam: "Team B",
-    homeScore: 0,
-    awayScore: 0,
+    gameEvents: [],
     status: "scheduled",
   };
 
@@ -44,16 +28,68 @@ test("Invalid game item with missing home team", () => {
   expect(isValid).toBe(false);
 });
 
-test("Invalid game item with negative scores", () => {
+test("Invalid game item when there is not player name", () => {
   const gameItem: GameType = {
     id: 1,
     homeTeam: "Team A",
     awayTeam: "Team B",
-    homeScore: -1,
-    awayScore: 2,
-    status: "finished",
+    gameEvents: [
+      {
+        id: 1,
+        type: "goal",
+        player: "",
+        team: "home",
+        time: "10",
+      },
+    ],
+    status: "in progress",
   };
 
-  const isValid = isGameValid(gameItem);
+  const isValid =
+    isGameValid(gameItem) && isGameEventValid(gameItem.gameEvents[0]);
+  expect(isValid).toBe(false);
+});
+
+test("Invalid game item when there is not team name", () => {
+  const gameItem: GameType = {
+    id: 1,
+    homeTeam: "Team A",
+    awayTeam: "Team B",
+    gameEvents: [
+      {
+        id: 1,
+        type: "goal",
+        player: "Messi",
+        team: "",
+        time: "10",
+      },
+    ],
+    status: "in progress",
+  };
+
+  const isValid =
+    isGameValid(gameItem) && isGameEventValid(gameItem.gameEvents[0]);
+  expect(isValid).toBe(false);
+});
+
+test("Invalid game item when there is not time", () => {
+  const gameItem: GameType = {
+    id: 1,
+    homeTeam: "Team A",
+    awayTeam: "Team B",
+    gameEvents: [
+      {
+        id: 1,
+        type: "goal",
+        player: "Messi",
+        team: "Team A",
+        time: "",
+      },
+    ],
+    status: "in progress",
+  };
+
+  const isValid =
+    isGameValid(gameItem) && isGameEventValid(gameItem.gameEvents[0]);
   expect(isValid).toBe(false);
 });

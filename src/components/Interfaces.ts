@@ -1,8 +1,10 @@
+import { GameEvent } from "../data/types";
+
 export interface GameProps {
   id: number;
   homeTeam: string;
   awayTeam: string;
-  homeScore: number;
-  awayScore: number;
+  gameEvents: GameEvent[];
   status: string;
+  startTime: string;
 }

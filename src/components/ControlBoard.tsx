@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { GameType, GameStatus } from "../data/types";
+import { FormEvent, useState } from "react";
+import { GameEvent, GameType, typeEvent } from "../data/types";
 import { Button, Input, Select, Option } from "@material-tailwind/react";
 import { capitalize } from "../utils/helper";
-import { isGameValid } from "../utils/validations";
+import { isGameEventValid, isGameValid } from "../utils/validations";
 import AlertComponent from "../common/AlertComponent";
 
-const GameStatusList: string[] = ["scheduled", "in progress", "finished"];
+const GameEventTypes: string[] = ["goal", "yellow", "red"];
 
 const ControlBoard = ({
   game: gameToEdit,
@@ -18,137 +18,204 @@ const ControlBoard = ({
     id: 0,
     homeTeam: "",
     awayTeam: "",
-    homeScore: 0,
-    awayScore: 0,
+    gameEvents: [],
     status: "scheduled",
+    startTime: "",
   };
   const [gameItem, setGameItem] = useState<GameType>(gameToEdit || defaultGame);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [type, setType] = useState<typeEvent>("goal");
+  const [team, setTeam] = useState<string>("home");
 
-  const handleOnChange = () => {
+  const getHighestID = (): number => {
+    return gameItem.gameEvents.reduce((maxId, gameEvent) => {
+      return gameEvent.id > maxId ? gameEvent.id : maxId;
+    }, 0);
+  };
+
+  const handleEndGame = () => {
+    gameItem.status = "finished";
+    onSave(gameItem);
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (isGameValid(gameItem)) {
-      onSave(gameItem);
+      if (gameItem.id === 0) {
+        gameItem.id = getHighestID() + 1;
+        gameItem.gameEvents = [];
+        gameItem.homeTeam =
+          (event.currentTarget["home-team"] as HTMLInputElement)?.value ?? "";
+        gameItem.awayTeam =
+          (event.currentTarget["away-team"] as HTMLInputElement)?.value ?? "";
+        gameItem.status = "scheduled";
+        onSave(gameItem);
+      } else {
+        if (gameItem.status === "scheduled") {
+          gameItem.status = "in progress";
+          gameItem.startTime = new Date().toISOString();
+          onSave(gameItem);
+        } else {
+          const playerName = (event.currentTarget.player as HTMLInputElement)
+            ?.value;
+
+          const newGameEvent: GameEvent = {
+            id: getHighestID() + 1,
+            type: type,
+            player: playerName,
+            time: new Date().toISOString(),
+            team: team,
+          };
+
+          if (isGameEventValid(newGameEvent)) {
+            gameItem.gameEvents.push(newGameEvent);
+            onSave(gameItem);
+          } else {
+            setShowErrorAlert(true);
+          }
+        }
+      }
     } else {
-      setShowAlert(true);
+      setShowErrorAlert(true);
     }
   };
 
   const handleHideAlert = () => {
-    setShowAlert(false);
+    setShowErrorAlert(false);
+  };
+
+  const getButtonLabel = (): string => {
+    if (gameItem.id === 0) {
+      return "Add Game";
+    }
+    if (gameItem.status === "scheduled") {
+      return "Start Game";
+    } else {
+      return "Add Event";
+    }
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col justify-around pb-4 md:flex-row">
-        <div className="pb-4">
-          <div className="flex justify-start pb-2">
-            <label htmlFor="away-team">Game status</label>
-          </div>
-          <div>
-            <Select
-              data-testid="status-selector"
-              id="status"
-              name="status"
-              value={gameItem.status}
-              onChange={(e) => {
-                setGameItem({
-                  ...gameItem,
-                  status: e as GameStatus,
-                });
-              }}
-            >
-              {GameStatusList.map((status) => (
-                <Option key={status} value={status}>
-                  {capitalize(status)}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col justify-around pb-4 md:flex-row">
-        <div className="flex flex-col pb-4">
-          <label htmlFor="home-team">Home Team</label>
-          <Input
-            type="text"
-            id="home-team"
-            placeholder="Home Team"
-            value={gameItem.homeTeam}
-            onChange={(e) => {
-              setGameItem({ ...gameItem, homeTeam: e.target.value });
-            }}
-          />
-        </div>
+    <form onSubmit={(e) => handleSubmit(e)}>
+      <div className="flex flex-col">
+        {gameItem && gameItem.id === 0 && (
+          <div className="flex flex-col justify-around pb-4 md:flex-row">
+            <div className="flex flex-col pb-4">
+              <label htmlFor="home-team">Home Team</label>
+              <Input
+                type="text"
+                id="home-team"
+                placeholder="Home Team"
+                value={gameItem.homeTeam}
+                onChange={(e) => {
+                  setGameItem({ ...gameItem, homeTeam: e.target.value });
+                }}
+              />
+            </div>
 
-        <div className="flex flex-col pb-4">
-          <div>
-            <label htmlFor="away-team">Away Team</label>
+            <div className="flex flex-col pb-4">
+              <div>
+                <label htmlFor="away-team">Away Team</label>
+              </div>
+              <div>
+                <Input
+                  type="text"
+                  id="away-team"
+                  placeholder="Away Team"
+                  value={gameItem.awayTeam}
+                  onChange={(e) => {
+                    setGameItem({ ...gameItem, awayTeam: e.target.value });
+                  }}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <Input
-              type="text"
-              id="away-team"
-              placeholder="Away Team"
-              value={gameItem.awayTeam}
-              onChange={(e) => {
-                setGameItem({ ...gameItem, awayTeam: e.target.value });
-              }}
-            />
+        )}
+        {gameItem.status === "scheduled" ? (
+          <>ready to start</>
+        ) : (
+          <div className="flex flex-col justify-around pb-4 md:flex-row">
+            <div className="flex flex-col pb-4">
+              <div className="pb-4">
+                <div className="flex justify-start pb-2">
+                  <label htmlFor="team-selector">Select team</label>
+                </div>
+                <div>
+                  <Select
+                    data-testid="team-selector"
+                    id="team"
+                    name="team"
+                    onChange={(e) => {
+                      setTeam(e as string);
+                    }}
+                  >
+                    <Option key={gameItem.homeTeam} value={gameItem.homeTeam}>
+                      {gameItem.homeTeam}
+                    </Option>
+                    <Option key={gameItem.awayTeam} value={gameItem.awayTeam}>
+                      {gameItem.awayTeam}
+                    </Option>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col pb-4">
+              <div className="pb-4">
+                <div className="flex justify-start pb-2">
+                  <label htmlFor="away-team">Game event</label>
+                </div>
+                <div>
+                  <Select
+                    data-testid="type-selector"
+                    id="type"
+                    name="type"
+                    onChange={(e) => {
+                      setType(e as typeEvent);
+                    }}
+                  >
+                    {GameEventTypes.map((status) => (
+                      <Option key={status} value={status}>
+                        {capitalize(status)}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col pb-4">
+              <div>
+                <label htmlFor="player">Player</label>
+              </div>
+              <div>
+                <Input type="string" id="player" placeholder="Player" />
+              </div>
+            </div>
           </div>
+        )}
+        <div className="flex justify-around pb-4">
+          {gameItem.status === "in progress" && (
+            <Button
+              data-testid="end-game-button"
+              variant="gradient"
+              color="red"
+              onClick={handleEndGame}
+            >
+              End Game
+            </Button>
+          )}
+          <Button type="submit" variant="gradient" color="green">
+            {getButtonLabel()}
+          </Button>
         </div>
+        <AlertComponent
+          showAlert={showErrorAlert}
+          hideAlert={handleHideAlert}
+          color="red"
+          message="Error: All fields are required!"
+        />
       </div>
-      <div className="flex flex-col justify-around pb-4 md:flex-row">
-        <div className="flex flex-col pb-4">
-          <div>
-            <label htmlFor="home-score">Home Score</label>
-          </div>
-          <div>
-            <Input
-              type="number"
-              id="home-score"
-              placeholder="Home Score"
-              value={gameItem.homeScore}
-              onChange={(e) => {
-                setGameItem({
-                  ...gameItem,
-                  homeScore: parseInt(e.target.value),
-                });
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col pb-4">
-          <div>
-            <label htmlFor="away-score">Away Score</label>
-          </div>
-          <div>
-            <Input
-              type="number"
-              id="away-score"
-              placeholder="Away Score"
-              value={gameItem.awayScore}
-              onChange={(e) => {
-                setGameItem({
-                  ...gameItem,
-                  awayScore: parseInt(e.target.value),
-                });
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="ml-auto pb-4">
-        <Button variant="gradient" color="green" onClick={handleOnChange}>
-          {gameItem.id == 0 ? "Add Game" : "Update Game"}
-        </Button>
-      </div>
-      <AlertComponent
-        showAlert={showAlert}
-        hideAlert={handleHideAlert}
-        color="red"
-        message="All fields are required and if the game is scheduled, scores must be 0."
-      />
-    </div>
+    </form>
   );
 };
 

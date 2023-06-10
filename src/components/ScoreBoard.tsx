@@ -26,9 +26,9 @@ const ScoreBoard = ({
                     id={game.id}
                     homeTeam={game.homeTeam}
                     awayTeam={game.awayTeam}
-                    homeScore={game.homeScore}
-                    awayScore={game.awayScore}
+                    gameEvents={game.gameEvents}
                     status={game.status}
+                    startTime={game.startTime}
                   />
                 </ListItem>
               ))}
