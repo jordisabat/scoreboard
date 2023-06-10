@@ -62,7 +62,7 @@ To run ESLint and check for code quality issues, use the following command:
 
 ![image](https://github.com/jordisabat/scoreboard/assets/8877242/92bb78c3-40e0-432b-bdae-cdb9ebc8197a)
 
-## UPDATE
+# UPDATE
 Task 1:
 Refactor the solution to allow only incremental score changes where the time of the goal is saved and displayed in the scoreboard.
 
@@ -73,7 +73,7 @@ Task 3:
 Refactor the solution to support yellow/red cards information, similar to how the match score is displayed, the score board should display the cards information.
 
 
-# SOLUTION
+## SOLUTION
 This solution introduces several changes to the existing codebase to support an updated structure for the GameType and introduces additional functionality related to game events and player information.
 This change allows for more flexible and comprehensive storage of game events, such as goals, red or yellow cards, and other significant occurrences during the game.
 
@@ -98,6 +98,12 @@ Here's an overview of the changes:
 <img width="432" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/52a122ea-67d9-4860-949d-f3d3af0b5182">
   
 <img width="494" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/f21c875b-5b16-4b69-8fa4-dc8aa6530ff8">  
+
+# Test coverage
+
+<img width="683" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/7c177cb4-b64a-4b30-ba0f-c12f6a4dc35a">
+
+<img width="845" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/5a40238d-2dd9-4c9f-ab82-253f991a0040">
 
 
 
