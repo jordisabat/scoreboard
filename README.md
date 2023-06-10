@@ -62,5 +62,39 @@ To run ESLint and check for code quality issues, use the following command:
 
 ![image](https://github.com/jordisabat/scoreboard/assets/8877242/92bb78c3-40e0-432b-bdae-cdb9ebc8197a)
 
+## UPDATE
+Task 1:
+Refactor the solution to allow only incremental score changes where the time of the goal is saved and displayed in the scoreboard.
+
+Task 2:
+Refactor the solution to include the player name who scored a goal, the player name initials should be displayed along with the goal time in the scoreboard.
+
+Task 3:
+Refactor the solution to support yellow/red cards information, similar to how the match score is displayed, the score board should display the cards information.
+
+
+# SOLUTION
+This solution introduces several changes to the existing codebase to support an updated structure for the GameType and introduces additional functionality related to game events and player information. Here's an overview of the changes:
+
+- **Restructured GameType**: The GameType structure has been modified to remove the home and away goals and replace them with a new type called GameEvent. This change allows for more flexible and comprehensive storage of game events, such as goals, red or yellow cards, and other significant occurrences during the game.
+
+- **Event-specific Information**: Each GameEvent now includes properties to store information about the event, such as the type of event (goal, red card, yellow card), the player involved, and the time at which the event occurred.
+
+- **StartTime Tracking**: A startTime property has been added to the game, enabling the calculation of event times relative to the start of the game. This information will help to diplay the minute of occurrence for a better representation of game progress.
+
+- **Player Initials**: The updated code includes functionality to extract the initials of a player's name to show next to each event on the ScoreBoard.
+  
+- **Sort of games**: The sorting of the games based of the number of goals is updated to work with the new GameEvent type.
+
+- **Update Control Board**: I updated the control board form fields so we can start or end a game with a button. On start is asking for home/away team names and during the game we can add game events.
+
+- **Update tests: The tests have been updated to iclude the changes in the code to ensure proper functionality with the updated requirements.
+
+<img width="440" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/93cfbeaa-3967-4dc5-94fb-aed5e36f3b48">
+  
+<img width="432" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/52a122ea-67d9-4860-949d-f3d3af0b5182">
+  
+<img width="494" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/f21c875b-5b16-4b69-8fa4-dc8aa6530ff8">  
+
 
 
