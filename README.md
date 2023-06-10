@@ -74,21 +74,24 @@ Refactor the solution to support yellow/red cards information, similar to how th
 
 
 # SOLUTION
-This solution introduces several changes to the existing codebase to support an updated structure for the GameType and introduces additional functionality related to game events and player information. Here's an overview of the changes:
+This solution introduces several changes to the existing codebase to support an updated structure for the GameType and introduces additional functionality related to game events and player information.
+This change allows for more flexible and comprehensive storage of game events, such as goals, red or yellow cards, and other significant occurrences during the game.
 
-- **Restructured GameType**: The GameType structure has been modified to remove the home and away goals and replace them with a new type called GameEvent. This change allows for more flexible and comprehensive storage of game events, such as goals, red or yellow cards, and other significant occurrences during the game.
+Here's an overview of the changes:
 
-- **Event-specific Information**: Each GameEvent now includes properties to store information about the event, such as the type of event (goal, red card, yellow card), the player involved, and the time at which the event occurred.
+- **Restructured GameType**: The GameType structure has been modified to remove the home and away goals and replace them with a new type called GameEvent that is a list of events that happens in a game. 
+ 
+- **New GameEvent type**: Each GameEvent now includes properties to store information about the event, such as the type of event (goal, red card, yellow card), the player involved, and the time at which the event occurred.
 
-- **StartTime Tracking**: A startTime property has been added to the game, enabling the calculation of event times relative to the start of the game. This information will help to diplay the minute of occurrence for a better representation of game progress.
+- **StartTime**: A startTime property has been added to the game, enabling the calculation of event times relative to the start of the game. This information will help to diplay the minute of occurrence for a better representation of game progress.
 
 - **Player Initials**: The updated code includes functionality to extract the initials of a player's name to show next to each event on the ScoreBoard.
   
 - **Sort of games**: The sorting of the games based of the number of goals is updated to work with the new GameEvent type.
 
-- **Update Control Board**: I updated the control board form fields so we can start or end a game with a button. On start is asking for home/away team names and during the game we can add game events.
+- **Update Control Board Form**: I updated the control board fields and actions. Now we can start or end a game with a button. On start is asking for home/away team names and during the game we can add game events.
 
-- **Update tests: The tests have been updated to iclude the changes in the code to ensure proper functionality with the updated requirements.
+- **Update tests**: The tests have been updated to ensure proper functionality with the updated requirements.
 
 <img width="440" alt="image" src="https://github.com/jordisabat/scoreboard/assets/8877242/93cfbeaa-3967-4dc5-94fb-aed5e36f3b48">
   
